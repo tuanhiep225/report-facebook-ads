@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.restfb.Connection;
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-import com.restfb.Version;
-import com.restfb.types.User;
-import com.restfb.types.ads.AdAccount;
-import com.restfb.types.ads.Business;
-import com.restfb.types.ads.Campaign;
+import com.facebook.ads.sdk.APIContext;
+import com.facebook.ads.sdk.APIException;
+import com.facebook.ads.sdk.APINodeList;
+import com.facebook.ads.sdk.AdAccount;
+import com.facebook.ads.sdk.Campaign;
+import com.facebook.ads.sdk.Page;
+import com.facebook.ads.sdk.User;
+
+
 
 /**
  * @author Admin
@@ -26,15 +27,17 @@ import com.restfb.types.ads.Campaign;
 @RestController
 @RequestMapping("/report/demo")
 public class DemoAPI {
-	final String MY_ACCESS_TOKEN = "EAAGNO4a7r2wBAHMJdOVyjROdVNSTe5lH5INaq7r1GfFO2IUwZBDtbDgbN5tnaw5mZCinzzcgxnMWu0e74RwbBhCx7fdsILbOPKn9ZBD1LdAzsuHisqWU6zxmttZC0eX6WyLkYNNGY6Dw6u3bqenGVejwxIsUgSt1NiV4Myf3xQZDZD\r\n" + "";
+	public static final APIContext context = new APIContext(
+            "EAAFFPnlEU54BAN2iCMAMDbt9aw9Ku9EQ5ktDDppnwBr9FbqF8MfiHyHbZANrn46t9GZBfiItgowM9ZAzP7ZBZBp7vZC0sFZA6AogbWptM34ZCe8vIAUjG0ub5HditsUvxtDtwZBunpLkZBC1fqD3nMW7AQnL5fstR3Vx4FeNQUzAsEwvpK623CZCzZC3SnFvdle4tqGX7OfUq4M3NoWdHiXOAwLT",
+            "1d14f0ebfd6a22ac3aa94ab91dcd1b55"
+    );
+//	final String MY_ACCESS_TOKEN = "EAAFFPnlEU54BAGreyZCBfsi22yfhFC2zNbWLIGZAy8EwoKJSVEH5CAFusKTzqceJTuTdzunuzZBVO8qlE3OI6c8yZAx8xz2pI65U2eQxseycIW5HegelPxDbT1WOLIJNv1PU44W2QGZAovZCZBaEP0YHwYIdF4mTuguE7hIM83tlZBZCdt1l01sSPcR8e6hqxHbhTSA0JSqjwX80L5aGZB8w12";
 	@GetMapping("/get-account-ads")
-	public List<AdAccount> getName() {
-		 List<AdAccount> adAccounts = new ArrayList<>();
-		FacebookClient facebookClient = new DefaultFacebookClient(MY_ACCESS_TOKEN, Version.VERSION_3_1);
-		 Connection<AdAccount> connAdAccount = facebookClient.fetchConnection("me/adaccounts", AdAccount.class);
-	        for (List<AdAccount> adAccountList : connAdAccount) {
-	            adAccounts.addAll(adAccountList);
-	        }
-	        return adAccounts;
+	public List<Campaign> getName() throws APIException {
+		 AdAccount account = new AdAccount("1574106749485060", context);
+	            APINodeList<Campaign> campaigns = account.getCampaigns().requestAllFields().execute();
+		return campaigns;
 	}
+	
+
 }
