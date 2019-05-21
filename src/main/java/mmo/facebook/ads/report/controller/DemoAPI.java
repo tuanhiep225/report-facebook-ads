@@ -3,16 +3,21 @@
  */
 package mmo.facebook.ads.report.controller;
 
-import org.springframework.social.facebook.connect.FacebookAdapter;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Version;
 import com.restfb.types.User;
+import com.restfb.types.ads.AdAccount;
+import com.restfb.types.ads.Business;
+import com.restfb.types.ads.Campaign;
 
 /**
  * @author Admin
@@ -21,15 +26,15 @@ import com.restfb.types.User;
 @RestController
 @RequestMapping("/report/demo")
 public class DemoAPI {
-	final String MY_ACCESS_TOKEN = "EAACtyQLitBYBAJzCeMABmqM91ZCvnShRnxaZAZAcxICbsGffQZBeGuNdMgKafLwyIYZBSLQAau8KpADCrPC6eTds83kpwMTSQBZC1jm826FfUcWx9CZBtO6jLktpiDzHWIePJpq5OynRe5NZCpaIsDXEfDRGKjaZBVLJnbx5BvpMjtLrdZAluqsGXJMAE6bxZCURZCt3bWNJFE2QLXDEc9MGEV0x";
-	@GetMapping("/get-name")
-	public User getName() {
+	final String MY_ACCESS_TOKEN = "EAAGNO4a7r2wBAHMJdOVyjROdVNSTe5lH5INaq7r1GfFO2IUwZBDtbDgbN5tnaw5mZCinzzcgxnMWu0e74RwbBhCx7fdsILbOPKn9ZBD1LdAzsuHisqWU6zxmttZC0eX6WyLkYNNGY6Dw6u3bqenGVejwxIsUgSt1NiV4Myf3xQZDZD\r\n" + "";
+	@GetMapping("/get-account-ads")
+	public List<AdAccount> getName() {
+		 List<AdAccount> adAccounts = new ArrayList<>();
 		FacebookClient facebookClient = new DefaultFacebookClient(MY_ACCESS_TOKEN, Version.VERSION_3_1);
-		 User user = facebookClient.fetchObject("me", User.class);
-         
-	        System.out.println("User="+ user);
-	        System.out.println("UserName= "+ user.getUsername());
-	        System.out.println("Birthday= "+ user.getBirthday());
-	        return user;
+		 Connection<AdAccount> connAdAccount = facebookClient.fetchConnection("me/adaccounts", AdAccount.class);
+	        for (List<AdAccount> adAccountList : connAdAccount) {
+	            adAccounts.addAll(adAccountList);
+	        }
+	        return adAccounts;
 	}
 }
