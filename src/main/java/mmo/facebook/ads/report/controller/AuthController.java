@@ -1,6 +1,7 @@
 package mmo.facebook.ads.report.controller;
 
 
+import org.intellij.lang.annotations.JdkConstants.BoxLayoutAxis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -81,4 +83,9 @@ public class AuthController {
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
 
+    
+    @GetMapping("/facebook")
+    public String accessToken(@RequestBody Object a) {
+    	return "aaaa";
+    }
 }

@@ -12,7 +12,7 @@ import mmo.facebook.ads.report.config.AppProperties;
 public class ReportApplication {
 
 	public static void main(String[] args) {
-		 System.setProperty("spring.devtools.restart.enabled", "false");
+		 System.setProperty("spring.devtools.restart.enabled", "true");
 		SpringApplication.run(ReportApplication.class, args);
 	}
 	

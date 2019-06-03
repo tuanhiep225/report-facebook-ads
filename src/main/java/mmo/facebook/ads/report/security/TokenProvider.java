@@ -7,9 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
 import io.jsonwebtoken.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class TokenProvider {
@@ -27,9 +33,12 @@ public class TokenProvider {
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
-
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("name", userPrincipal.getName());
+        userMap.put("email", userPrincipal.getEmail());
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
+                .setClaims(userMap)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
