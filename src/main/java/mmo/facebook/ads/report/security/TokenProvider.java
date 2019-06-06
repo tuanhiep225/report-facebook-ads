@@ -36,8 +36,8 @@ public class TokenProvider {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("name", userPrincipal.getName());
         userMap.put("email", userPrincipal.getEmail());
+        userMap.put("sub", Long.toString(userPrincipal.getId()));
         return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId()))
                 .setClaims(userMap)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)

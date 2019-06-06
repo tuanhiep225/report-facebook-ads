@@ -3,6 +3,7 @@ package mmo.facebook.ads.report.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import mmo.facebook.ads.report.model.User;
@@ -18,6 +19,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     private String password;
     private String name;
     private String imageUrl;
+    private OAuth2AccessToken accessToken;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
@@ -49,6 +51,13 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         userPrincipal.setAttributes(attributes);
         return userPrincipal;
     }
+    
+    public static UserPrincipal create(User user, Map<String, Object> attributes, OAuth2AccessToken accessToken) {
+        UserPrincipal userPrincipal = UserPrincipal.create(user);
+        userPrincipal.setAttributes(attributes);
+        userPrincipal.setAccessToken(accessToken);
+        return userPrincipal;
+    }
 
     public Long getId() {
         return id;
@@ -69,6 +78,16 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+
+	public OAuth2AccessToken getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(OAuth2AccessToken accessToken) {
+		this.accessToken = accessToken;
 	}
 
 	@Override
