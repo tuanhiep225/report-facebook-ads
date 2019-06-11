@@ -11,9 +11,13 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import mmo.facebook.ads.report.exception.OAuth2AuthenticationProcessingException;
+import mmo.facebook.ads.report.model.AccessToken;
 import mmo.facebook.ads.report.model.AuthProvider;
 import mmo.facebook.ads.report.model.User;
+import mmo.facebook.ads.report.repository.AccessTokenRepository;
 import mmo.facebook.ads.report.repository.UserRepository;
 import mmo.facebook.ads.report.security.UserPrincipal;
 import mmo.facebook.ads.report.security.oauth2.user.OAuth2UserInfo;
@@ -26,6 +30,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private AccessTokenRepository accessTokenRepository;
+    
+    @Autowired
+    private ObjectMapper mapper;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -72,7 +82,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
-        return userRepository.save(user);
+        AccessToken token = mapper.convertValue(oAuth2UserInfo.getAccessToken(), AccessToken.class);
+        token.setUser(user);
+        user.setAccessToken(token);
+        User userRs = userRepository.save(user);
+        return userRs;
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {

@@ -7,6 +7,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,9 +53,7 @@ public class AccessToken {
 	private  Set<String> scopes;
 	
 	@OneToOne
-	@MapKey(name="email")
-	//@JoinColumn(name = "users_email", nullable = false,updatable = true, insertable = true, referencedColumnName = "email")
-	@JsonIgnore
+	@JoinColumn(name = "user_id", nullable = false,updatable = true, insertable = true)
 	private User user;
 	
 

@@ -50,8 +50,20 @@ public class TokenProvider {
                 .setSigningKey(appProperties.getAuth().getTokenSecret())
                 .parseClaimsJws(token)
                 .getBody();
+        
+
 
         return Long.parseLong(claims.getSubject());
+    }
+    
+    public String getUserEmailFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(appProperties.getAuth().getTokenSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        
+
+        return claims.get("email").toString();
     }
 
     public boolean validateToken(String authToken) {

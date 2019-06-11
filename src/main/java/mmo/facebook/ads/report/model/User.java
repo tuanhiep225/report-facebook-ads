@@ -1,15 +1,21 @@
 package mmo.facebook.ads.report.model;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,6 +33,7 @@ public class User {
 
     @Email
     @Column(nullable = false)
+    
     private String email;
 
     private String imageUrl;
@@ -43,6 +50,19 @@ public class User {
 
     private String providerId;
     
+    @OneToOne(mappedBy = "user",cascade=CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @JsonIgnore
+    private AccessToken accessToken;
+    
+	public AccessToken getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(AccessToken accessToken) {
+		this.accessToken = accessToken;
+	}
+
 	public Long getId() {
         return id;
     }
