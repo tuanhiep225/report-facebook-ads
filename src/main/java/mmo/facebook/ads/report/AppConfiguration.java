@@ -15,11 +15,18 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 /**
  * @author Admin
  *
  */
 @Configuration
+@EnableSwagger2
 public class AppConfiguration {
 	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
@@ -44,5 +51,14 @@ public class AppConfiguration {
 	    });
 	    return factory;
 	}
+	
+	@Bean
+    public Docket api() { 
+        return new Docket(DocumentationType.SWAGGER_2)  
+          .select()                                  
+          .apis(RequestHandlerSelectors.any())              
+          .paths(PathSelectors.any())                          
+          .build();                                           
+    }
 
 }
